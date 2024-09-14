@@ -29,6 +29,26 @@ app.use("/api/v1/category",categoryRoutes);
 app.use("/api/v1/product",productRoutes);
 
 
+// deployment code 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '/client/build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+} else {
+    app.get('/', (req, res) => {
+        res.send("API is running successfully");
+    });
+}
+
+// deployment code till here
+
+
+
 
 //rest api
 app.get('/',(req,res) => {
